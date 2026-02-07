@@ -1,5 +1,6 @@
-import { Phone, MapPin, Mail } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import { Link } from "react-router-dom";
+import { Phone, MapPin } from "lucide-react";
+import logo from "@/assets/logo-transparent.png";
 
 const Footer = () => {
   return (
@@ -12,7 +13,7 @@ const Footer = () => {
               <img
                 src={logo}
                 alt="Best Packers and Movers"
-                className="h-12 w-auto rounded-md"
+                className="h-16 w-auto"
               />
             </div>
             <p className="max-w-sm text-sm text-primary-foreground/60 leading-relaxed">
@@ -29,18 +30,19 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2">
               {[
-                { label: "Home", href: "#home" },
-                { label: "Services", href: "#services" },
-                { label: "Why Choose Us", href: "#why-us" },
-                { label: "Contact", href: "#contact" },
+                { label: "Home", to: "/" },
+                { label: "About Us", to: "/about" },
+                { label: "Services", to: "/services" },
+                { label: "Gallery", to: "/gallery" },
+                { label: "Contact", to: "/contact" },
               ].map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
                     className="text-sm text-primary-foreground/60 transition-colors hover:text-secondary"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -55,16 +57,10 @@ const Footer = () => {
               <li className="flex items-start gap-2">
                 <Phone className="mt-1 h-4 w-4 shrink-0 text-secondary" />
                 <div>
-                  <a
-                    href="tel:9700067784"
-                    className="block text-sm text-primary-foreground/60 hover:text-secondary transition-colors"
-                  >
+                  <a href="tel:9700067784" className="block text-sm text-primary-foreground/60 hover:text-secondary transition-colors">
                     97000 67784
                   </a>
-                  <a
-                    href="tel:6301409282"
-                    className="block text-sm text-primary-foreground/60 hover:text-secondary transition-colors"
-                  >
+                  <a href="tel:6301409282" className="block text-sm text-primary-foreground/60 hover:text-secondary transition-colors">
                     63014 09282
                   </a>
                 </div>
