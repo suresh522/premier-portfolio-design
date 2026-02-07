@@ -1,24 +1,31 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo-transparent.png";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "Why Us", href: "#why-us" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [location.pathname]);
 
   return (
     <motion.header
@@ -28,29 +35,39 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
           ? "bg-primary/95 backdrop-blur-md shadow-premium"
-          : "bg-transparent"
+          : "bg-primary/80 backdrop-blur-sm"
       }`}
     >
-      <div className="container mx-auto flex items-center justify-between px-4 py-3 lg:px-8">
+      <div className="container mx-auto flex items-center justify-between px-4 py-2 lg:px-8">
         {/* Logo */}
-        <a href="#home" className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           <img
             src={logo}
             alt="Best Packers and Movers Logo"
-            className="h-12 w-auto md:h-14 rounded-md"
+            className="h-14 w-auto md:h-16"
           />
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
-              className="relative px-4 py-2 font-display text-sm font-semibold tracking-wide text-primary-foreground/90 transition-colors hover:text-secondary"
+              to={link.href}
+              className={`relative px-4 py-2 font-display text-sm font-semibold tracking-wide transition-colors ${
+                location.pathname === link.href
+                  ? "text-secondary"
+                  : "text-primary-foreground/90 hover:text-secondary"
+              }`}
             >
               {link.label}
-            </a>
+              {location.pathname === link.href && (
+                <motion.div
+                  layoutId="nav-underline"
+                  className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-secondary"
+                />
+              )}
+            </Link>
           ))}
           <a
             href="tel:9700067784"
@@ -64,7 +81,7 @@ const Navbar = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="text-primary-foreground md:hidden"
+          className="text-primary-foreground lg:hidden"
           aria-label="Toggle menu"
         >
           {isMobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -79,18 +96,21 @@ const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden gradient-navy md:hidden"
+            className="overflow-hidden gradient-navy lg:hidden"
           >
             <div className="container mx-auto flex flex-col gap-1 px-4 pb-6">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMobileOpen(false)}
-                  className="rounded-lg px-4 py-3 font-display text-sm font-semibold text-primary-foreground/90 transition-colors hover:bg-primary/30 hover:text-secondary"
+                  to={link.href}
+                  className={`rounded-lg px-4 py-3 font-display text-sm font-semibold transition-colors ${
+                    location.pathname === link.href
+                      ? "bg-primary/30 text-secondary"
+                      : "text-primary-foreground/90 hover:bg-primary/30 hover:text-secondary"
+                  }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <a
                 href="tel:9700067784"
