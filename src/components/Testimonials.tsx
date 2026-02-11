@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Star, Quote, ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -44,16 +44,43 @@ const Testimonials = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
 
   useEffect(() => {
     const timer = setInterval(() => {
+      setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
-  const next = () => setCurrent((c) => (c + 1) % testimonials.length);
+  const prev = () => {
+    setDirection(-1);
+    setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
+  };
+  const next = () => {
+    setDirection(1);
+    setCurrent((c) => (c + 1) % testimonials.length);
+  };
+
+  const getVisibleIndices = () => {
+    return [0, 1, 2].map((offset) => (current + offset) % testimonials.length);
+  };
+
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 300 : -300,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -300 : 300,
+      opacity: 0,
+    }),
+  };
 
   return (
     <section className="section-padding bg-background relative overflow-hidden">
@@ -80,7 +107,7 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        {/* Cards grid - show 3 at a time on desktop */}
+        {/* Cards grid - smooth sliding */}
         <div className="relative">
           {/* Navigation arrows */}
           <button
@@ -98,52 +125,61 @@ const Testimonials = () => {
             <ArrowRight className="h-5 w-5" />
           </button>
 
-          <div className="grid gap-6 md:grid-cols-3 px-4">
-            {[0, 1, 2].map((offset) => {
-              const index = (current + offset) % testimonials.length;
-              const t = testimonials[index];
-              return (
-                <motion.div
-                  key={`${current}-${offset}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: offset * 0.1 }}
-                  className={`relative rounded-2xl border border-border bg-card p-6 shadow-md transition-all duration-300 ${
-                    offset === 1 ? "md:scale-105 md:shadow-premium md:border-secondary/30" : ""
-                  }`}
-                >
-                  <Quote className="absolute top-4 right-4 h-8 w-8 text-secondary/15" />
+          <div className="overflow-hidden px-4">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={current}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="grid gap-6 md:grid-cols-3"
+              >
+                {getVisibleIndices().map((index, offset) => {
+                  const t = testimonials[index];
+                  return (
+                    <div
+                      key={index}
+                      className={`relative rounded-2xl border border-border bg-card p-6 shadow-md transition-all duration-300 ${
+                        offset === 1 ? "md:scale-105 md:shadow-premium md:border-secondary/30" : ""
+                      }`}
+                    >
+                      <Quote className="absolute top-4 right-4 h-8 w-8 text-secondary/15" />
 
-                  {/* Stars */}
-                  <div className="flex gap-1 mb-4">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${i < t.rating ? "fill-secondary text-secondary" : "text-muted"}`}
-                      />
-                    ))}
-                  </div>
+                      {/* Stars */}
+                      <div className="flex gap-1 mb-4">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${i < t.rating ? "fill-secondary text-secondary" : "text-muted"}`}
+                          />
+                        ))}
+                      </div>
 
-                  {/* Quote text */}
-                  <p className="mb-6 text-muted-foreground leading-relaxed italic text-sm">
-                    "{t.text}"
-                  </p>
+                      {/* Quote text */}
+                      <p className="mb-6 text-muted-foreground leading-relaxed italic text-sm">
+                        "{t.text}"
+                      </p>
 
-                  {/* Author */}
-                  <div className="flex items-center gap-3 border-t border-border pt-4">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full gradient-orange shadow-sm">
-                      <span className="font-display text-sm font-bold text-primary-foreground">
-                        {t.initials}
-                      </span>
+                      {/* Author */}
+                      <div className="flex items-center gap-3 border-t border-border pt-4">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-full gradient-orange shadow-sm">
+                          <span className="font-display text-sm font-bold text-primary-foreground">
+                            {t.initials}
+                          </span>
+                        </div>
+                        <div>
+                          <h4 className="font-display text-sm font-bold text-foreground">{t.name}</h4>
+                          <p className="text-xs text-muted-foreground">{t.location}</p>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-display text-sm font-bold text-foreground">{t.name}</h4>
-                      <p className="text-xs text-muted-foreground">{t.location}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
@@ -152,7 +188,10 @@ const Testimonials = () => {
           {testimonials.map((_, i) => (
             <button
               key={i}
-              onClick={() => setCurrent(i)}
+              onClick={() => {
+                setDirection(i > current ? 1 : -1);
+                setCurrent(i);
+              }}
               className={`h-2.5 rounded-full transition-all duration-300 ${
                 i === current ? "w-8 bg-secondary" : "w-2.5 bg-muted-foreground/20"
               }`}
