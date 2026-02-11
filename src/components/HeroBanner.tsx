@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import serviceRes from "@/assets/service-residential.jpg";
 import serviceOffice from "@/assets/service-office.jpg";
+import heroTransport from "@/assets/hero-transport.jpg";
+import heroProject1 from "@/assets/hero-project1.jpg";
+import heroProject2 from "@/assets/hero-project2.jpg";
 
 const slides = [
   {
@@ -27,6 +30,27 @@ const slides = [
     highlight: "Office",
     subtitle: "Relocation",
     description: "Seamless office shifting with minimal downtime. IT equipment, furniture, and documents handled with professional care.",
+  },
+  {
+    image: heroTransport,
+    title: "Reliable",
+    highlight: "Transport",
+    subtitle: "Fleet",
+    description: "GPS-tracked vehicles with secure loading systems ensure your goods travel safely across any distance.",
+  },
+  {
+    image: heroProject1,
+    title: "Premium",
+    highlight: "Packing",
+    subtitle: "Service",
+    description: "Multi-layer bubble wrap, corrugated sheets, and high-quality cartons — your valuables deserve the best protection.",
+  },
+  {
+    image: heroProject2,
+    title: "Happy",
+    highlight: "Deliveries",
+    subtitle: "Guaranteed",
+    description: "500+ successful relocations with zero-damage delivery. Join our family of satisfied customers across India.",
   },
 ];
 

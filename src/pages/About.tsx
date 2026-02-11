@@ -4,6 +4,7 @@ import { Shield, Award, Users, Target, CheckCircle, ArrowRight } from "lucide-re
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo-transparent.png";
 import PricingTable from "@/components/PricingTable";
+import ServiceLocationsMap from "@/components/ServiceLocationsMap";
 
 const About = () => {
   return (
@@ -40,6 +41,9 @@ const About = () => {
 
       {/* Working Process */}
       <WorkingProcess />
+
+      {/* Service Locations Map */}
+      <ServiceLocationsMap />
 
       {/* Pricing */}
       <PricingTable />
