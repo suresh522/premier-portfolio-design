@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import Services from "@/components/Services";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import PricingTable from "@/components/PricingTable";
@@ -6,7 +7,13 @@ import PricingTable from "@/components/PricingTable";
 const ServicesPage = () => {
   return (
     <main className="min-h-screen pt-20">
-      {/* Page Banner */}
+      <Helmet>
+        <title>Packing & Moving Services Guntur | House, Office, Vehicle Shifting</title>
+        <meta name="description" content="Professional packing & moving services in Guntur AP – household shifting, office relocation, car & bike transport, furniture moving, long distance shifting. Affordable rates & 24/7 service. Call 97000 67784." />
+        <meta name="keywords" content="packing services guntur, moving services guntur, house shifting services guntur, office relocation services guntur AP, car transport services guntur, bike shifting services, furniture moving guntur, long distance packers movers, local shifting guntur, commercial moving andhra pradesh, warehouse storage guntur, goods packing guntur, safe transport services AP, door to door shifting guntur" />
+        <link rel="canonical" href="https://bestpackersandmoversguntur.com/services" />
+      </Helmet>
+
       <section className="gradient-navy py-16 lg:py-24">
         <div className="container mx-auto px-4 text-center">
           <motion.h1
@@ -22,7 +29,7 @@ const ServicesPage = () => {
             transition={{ delay: 0.2 }}
             className="mx-auto mt-4 max-w-2xl text-primary-foreground/70"
           >
-            Comprehensive packing, moving, and relocation services tailored to your needs.
+            Comprehensive packing, moving, and relocation services tailored to your needs across Guntur and all of Andhra Pradesh.
           </motion.p>
         </div>
       </section>
