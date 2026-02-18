@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import gallery1 from "@/assets/gallery/gallery-1.jpg";
 import gallery2 from "@/assets/gallery/gallery-2.jpg";
 import gallery3 from "@/assets/gallery/gallery-3.jpg";
@@ -12,15 +13,15 @@ import serviceTransport from "@/assets/service-transport.jpg";
 import { X } from "lucide-react";
 
 const allImages = [
-  { src: gallery1, alt: "Wardrobe packed with bubble wrap and tape", category: "Packing" },
-  { src: gallery2, alt: "Items packed and ready at doorstep", category: "Packing" },
-  { src: gallery3, alt: "Box packing with professional materials", category: "Packing" },
-  { src: gallery4, alt: "Sofa set packed securely for transport", category: "Furniture" },
-  { src: gallery5, alt: "Heavy cargo packed for long distance moving", category: "Transport" },
-  { src: gallery6, alt: "Bike packing and transport service", category: "Vehicle" },
-  { src: serviceRes, alt: "Residential house shifting service", category: "Residential" },
-  { src: serviceOffice, alt: "Office relocation service", category: "Office" },
-  { src: serviceTransport, alt: "Long distance transport service", category: "Transport" },
+  { src: gallery1, alt: "Household items packed with bubble wrap by Best Packers Movers Guntur", category: "Packing" },
+  { src: gallery2, alt: "Professional packing service at doorstep in Guntur AP", category: "Packing" },
+  { src: gallery3, alt: "Box packing with premium materials for safe moving Guntur", category: "Packing" },
+  { src: gallery4, alt: "Sofa set packed securely for transport by movers in Guntur", category: "Furniture" },
+  { src: gallery5, alt: "Heavy cargo packed for long distance moving from Guntur", category: "Transport" },
+  { src: gallery6, alt: "Bike packing and transport service in Andhra Pradesh", category: "Vehicle" },
+  { src: serviceRes, alt: "Residential house shifting service in Guntur Andhra Pradesh", category: "Residential" },
+  { src: serviceOffice, alt: "Office relocation service by Best Packers Movers Guntur", category: "Office" },
+  { src: serviceTransport, alt: "Long distance goods transport service across India", category: "Transport" },
 ];
 
 const categories = ["All", "Packing", "Furniture", "Transport", "Vehicle", "Residential", "Office"];
@@ -37,7 +38,13 @@ const GalleryPage = () => {
 
   return (
     <main className="min-h-screen pt-20">
-      {/* Page Banner */}
+      <Helmet>
+        <title>Gallery | Best Packers & Movers Guntur Work Photos & Projects</title>
+        <meta name="description" content="View our gallery of completed packing & moving projects in Guntur. See how Best Packers & Movers handles household shifting, office relocation, furniture packing & vehicle transport with care." />
+        <meta name="keywords" content="packers movers gallery guntur, moving photos guntur, packing work images, household shifting photos AP, office relocation gallery, furniture packing images guntur, transport service photos andhra pradesh" />
+        <link rel="canonical" href="https://bestpackersandmoversguntur.com/gallery" />
+      </Helmet>
+
       <section className="gradient-navy py-16 lg:py-24">
         <div className="container mx-auto px-4 text-center">
           <motion.h1
@@ -58,10 +65,8 @@ const GalleryPage = () => {
         </div>
       </section>
 
-      {/* Gallery */}
       <section className="section-padding bg-background">
         <div className="container mx-auto">
-          {/* Filters */}
           <motion.div
             ref={ref}
             initial={{ opacity: 0, y: 20 }}
@@ -83,7 +88,6 @@ const GalleryPage = () => {
             ))}
           </motion.div>
 
-          {/* Grid */}
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-6">
             {filtered.map((img, i) => (
               <motion.div
@@ -114,7 +118,6 @@ const GalleryPage = () => {
         </div>
       </section>
 
-      {/* Lightbox */}
       {lightbox !== null && (
         <motion.div
           initial={{ opacity: 0 }}

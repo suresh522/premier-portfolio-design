@@ -1,14 +1,25 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Shield, Award, Users, Target, CheckCircle, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Shield, Award, Users, Target } from "lucide-react";
 import logo from "@/assets/logo-transparent.png";
+import founderImg from "@/assets/team/founder.jpg";
+import teamOneImg from "@/assets/team/team-one.jpg";
+import teamTwoImg from "@/assets/team/team-two.jpg";
+import teamThreeImg from "@/assets/team/team-three.jpg";
 import PricingTable from "@/components/PricingTable";
 import ServiceLocationsMap from "@/components/ServiceLocationsMap";
+import { Helmet } from "react-helmet-async";
 
 const About = () => {
   return (
     <main className="min-h-screen pt-20">
+      <Helmet>
+        <title>About Best Packers & Movers Guntur | Trusted Moving Company AP</title>
+        <meta name="description" content="Learn about Best Packers & Movers Guntur – a trusted packing & moving company in Andhra Pradesh. Founded by Vasanth M, we offer safe household, office & vehicle relocation services. 500+ happy customers." />
+        <meta name="keywords" content="about best packers movers guntur, packers movers company guntur, trusted movers andhra pradesh, vasanth m packers movers, moving company guntur AP, relocation experts guntur" />
+        <link rel="canonical" href="https://bestpackersandmoversguntur.com/about" />
+      </Helmet>
+
       {/* Page Banner */}
       <section className="gradient-navy py-16 lg:py-24">
         <div className="container mx-auto px-4 text-center">
@@ -30,22 +41,11 @@ const About = () => {
         </div>
       </section>
 
-      {/* Company Brief */}
       <CompanyBrief />
-
-      {/* Founder */}
       <FounderSection />
-
-      {/* Team */}
       <TeamSection />
-
-      {/* Working Process */}
       <WorkingProcess />
-
-      {/* Service Locations Map */}
       <ServiceLocationsMap />
-
-      {/* Pricing */}
       <PricingTable />
     </main>
   );
@@ -109,7 +109,7 @@ const CompanyBrief = () => {
           >
             <div className="relative">
               <div className="rounded-2xl gradient-navy p-12 lg:p-16">
-                <img src={logo} alt="Best Packers and Movers" className="w-64 lg:w-80" />
+                <img src={logo} alt="Best Packers and Movers Guntur Logo" className="w-64 lg:w-80" />
               </div>
               <div className="absolute -bottom-4 -right-4 rounded-xl gradient-orange px-6 py-3 shadow-glow-orange">
                 <span className="font-display text-lg font-bold text-primary-foreground">24/7 Service</span>
@@ -145,8 +145,8 @@ const FounderSection = () => {
             Meet <span className="text-gradient">Vasanth M</span>
           </h2>
           <div className="glass-card rounded-2xl p-8 lg:p-12">
-            <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full gradient-orange shadow-glow-orange">
-              <span className="font-display text-3xl font-black text-primary-foreground">VM</span>
+            <div className="mx-auto mb-6 h-28 w-28 overflow-hidden rounded-full border-4 border-secondary shadow-glow-orange">
+              <img src={founderImg} alt="Vasanth M - Founder of Best Packers and Movers Guntur" className="h-full w-full object-cover" />
             </div>
             <h3 className="font-display text-2xl font-bold text-primary-foreground mb-2">Vasanth M</h3>
             <p className="text-secondary font-display font-semibold mb-4">Founder &amp; Proprietor</p>
@@ -164,10 +164,10 @@ const FounderSection = () => {
 };
 
 const teamMembers = [
-  { name: "Vasanth M", role: "Founder & CEO", initials: "VM" },
-  { name: "Operations Team", role: "Logistics & Planning", initials: "OT" },
-  { name: "Packing Experts", role: "Professional Packers", initials: "PE" },
-  { name: "Transport Team", role: "Drivers & Handlers", initials: "TT" },
+  { name: "Ravi Kumar", role: "Operations Head", image: teamOneImg },
+  { name: "Suresh Babu", role: "Logistics Manager", image: teamTwoImg },
+  { name: "Kiran", role: "Packing Supervisor", image: teamThreeImg },
+  { name: "Vasanth M", role: "Founder & CEO", image: founderImg },
 ];
 
 const TeamSection = () => {
@@ -204,8 +204,8 @@ const TeamSection = () => {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="group rounded-2xl bg-card p-6 text-center shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-premium"
             >
-              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full gradient-navy transition-transform group-hover:scale-110">
-                <span className="font-display text-xl font-bold text-primary-foreground">{member.initials}</span>
+              <div className="mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full border-3 border-secondary/30 transition-transform group-hover:scale-110">
+                <img src={member.image} alt={`${member.name} - ${member.role} at Best Packers Movers`} className="h-full w-full object-cover" />
               </div>
               <h3 className="font-display text-lg font-bold text-foreground">{member.name}</h3>
               <p className="text-sm text-secondary font-semibold">{member.role}</p>
