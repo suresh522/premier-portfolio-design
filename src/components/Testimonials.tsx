@@ -1,5 +1,5 @@
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Star, Quote, ArrowLeft, ArrowRight } from "lucide-react";
 
 const testimonials = [
@@ -40,51 +40,77 @@ const testimonials = [
   },
 ];
 
+const TestimonialCard = ({ t, highlight }: { t: typeof testimonials[0]; highlight?: boolean }) => (
+  <div
+    className={`relative flex-shrink-0 w-[85vw] md:w-[calc(33.333%-16px)] rounded-2xl border border-border bg-card p-6 shadow-md transition-all duration-300 ${
+      highlight ? "md:scale-105 md:shadow-premium md:border-secondary/30" : ""
+    }`}
+  >
+    <Quote className="absolute top-4 right-4 h-8 w-8 text-secondary/15" />
+    <div className="flex gap-1 mb-4">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`h-4 w-4 ${i < t.rating ? "fill-secondary text-secondary" : "text-muted"}`}
+        />
+      ))}
+    </div>
+    <p className="mb-6 text-muted-foreground leading-relaxed italic text-sm">
+      "{t.text}"
+    </p>
+    <div className="flex items-center gap-3 border-t border-border pt-4">
+      <div className="flex h-11 w-11 items-center justify-center rounded-full gradient-orange shadow-sm">
+        <span className="font-display text-sm font-bold text-primary-foreground">
+          {t.initials}
+        </span>
+      </div>
+      <div>
+        <h4 className="font-display text-sm font-bold text-foreground">{t.name}</h4>
+        <p className="text-xs text-muted-foreground">{t.location}</p>
+      </div>
+    </div>
+  </div>
+);
+
 const Testimonials = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const totalSlides = testimonials.length;
+
+  const startAutoplay = useCallback(() => {
+    if (autoplayRef.current) clearInterval(autoplayRef.current);
+    autoplayRef.current = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % totalSlides);
+    }, 4000);
+  }, [totalSlides]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setDirection(1);
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+    if (!isHovered) startAutoplay();
+    return () => {
+      if (autoplayRef.current) clearInterval(autoplayRef.current);
+    };
+  }, [isHovered, startAutoplay]);
 
   const prev = () => {
-    setDirection(-1);
-    setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
+    setCurrent((c) => (c - 1 + totalSlides) % totalSlides);
+    startAutoplay();
   };
   const next = () => {
-    setDirection(1);
-    setCurrent((c) => (c + 1) % testimonials.length);
+    setCurrent((c) => (c + 1) % totalSlides);
+    startAutoplay();
   };
 
-  const getVisibleIndices = () => {
-    return [0, 1, 2].map((offset) => (current + offset) % testimonials.length);
-  };
-
-  const slideVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 300 : -300,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (dir: number) => ({
-      x: dir > 0 ? -300 : 300,
-      opacity: 0,
-    }),
-  };
+  // Build the visible 3-card window
+  const getVisibleIndices = () =>
+    [0, 1, 2].map((offset) => (current + offset) % totalSlides);
 
   return (
     <section className="section-padding bg-background relative overflow-hidden">
-      {/* Decorative */}
       <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-secondary/5 blur-3xl" />
       <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-navy/5 blur-3xl" />
 
@@ -107,8 +133,11 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        {/* Cards grid - smooth sliding */}
-        <div className="relative">
+        <div
+          className="relative"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           {/* Navigation arrows */}
           <button
             onClick={prev}
@@ -125,61 +154,23 @@ const Testimonials = () => {
             <ArrowRight className="h-5 w-5" />
           </button>
 
-          <div className="overflow-hidden px-4">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={current}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="grid gap-6 md:grid-cols-3"
-              >
-                {getVisibleIndices().map((index, offset) => {
-                  const t = testimonials[index];
-                  return (
-                    <div
-                      key={index}
-                      className={`relative rounded-2xl border border-border bg-card p-6 shadow-md transition-all duration-300 ${
-                        offset === 1 ? "md:scale-105 md:shadow-premium md:border-secondary/30" : ""
-                      }`}
-                    >
-                      <Quote className="absolute top-4 right-4 h-8 w-8 text-secondary/15" />
-
-                      {/* Stars */}
-                      <div className="flex gap-1 mb-4">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${i < t.rating ? "fill-secondary text-secondary" : "text-muted"}`}
-                          />
-                        ))}
-                      </div>
-
-                      {/* Quote text */}
-                      <p className="mb-6 text-muted-foreground leading-relaxed italic text-sm">
-                        "{t.text}"
-                      </p>
-
-                      {/* Author */}
-                      <div className="flex items-center gap-3 border-t border-border pt-4">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full gradient-orange shadow-sm">
-                          <span className="font-display text-sm font-bold text-primary-foreground">
-                            {t.initials}
-                          </span>
-                        </div>
-                        <div>
-                          <h4 className="font-display text-sm font-bold text-foreground">{t.name}</h4>
-                          <p className="text-xs text-muted-foreground">{t.location}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </motion.div>
-            </AnimatePresence>
+          <div className="overflow-hidden px-4" ref={trackRef}>
+            <motion.div
+              className="flex gap-6"
+              animate={{ x: 0 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+              key={current}
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+            >
+              {getVisibleIndices().map((index, offset) => (
+                <TestimonialCard
+                  key={`${current}-${index}`}
+                  t={testimonials[index]}
+                  highlight={offset === 1}
+                />
+              ))}
+            </motion.div>
           </div>
         </div>
 
@@ -189,8 +180,8 @@ const Testimonials = () => {
             <button
               key={i}
               onClick={() => {
-                setDirection(i > current ? 1 : -1);
                 setCurrent(i);
+                startAutoplay();
               }}
               className={`h-2.5 rounded-full transition-all duration-300 ${
                 i === current ? "w-8 bg-secondary" : "w-2.5 bg-muted-foreground/20"
