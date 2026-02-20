@@ -154,9 +154,9 @@ const Testimonials = () => {
             <ArrowRight className="h-5 w-5" />
           </button>
 
-          <div className="overflow-hidden px-4" ref={trackRef}>
+          <div className="overflow-hidden px-4 py-6" ref={trackRef}>
             <motion.div
-              className="flex gap-6"
+              className="flex gap-6 py-4"
               animate={{ x: 0 }}
               transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
               key={current}
