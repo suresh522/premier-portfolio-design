@@ -4,21 +4,21 @@ import { MapPin } from "lucide-react";
 import indiaMap from "@/assets/india-map.jpg";
 
 const locations = [
-  { name: "Guntur (HQ)", top: "62%", left: "44%", primary: true },
-  { name: "Hyderabad", top: "55%", left: "42%", primary: false },
-  { name: "Vijayawada", top: "60%", left: "47%", primary: false },
-  { name: "Bangalore", top: "72%", left: "40%", primary: false },
-  { name: "Chennai", top: "72%", left: "48%", primary: false },
-  { name: "Mumbai", top: "48%", left: "22%", primary: false },
-  { name: "Delhi", top: "22%", left: "38%", primary: false },
-  { name: "Kolkata", top: "40%", left: "65%", primary: false },
-  { name: "Pune", top: "52%", left: "26%", primary: false },
-  { name: "Visakhapatnam", top: "56%", left: "52%", primary: false },
-  { name: "Tirupati", top: "68%", left: "45%", primary: false },
-  { name: "Rajahmundry", top: "58%", left: "50%", primary: false },
-  { name: "Warangal", top: "53%", left: "45%", primary: false },
-  { name: "Kurnool", top: "60%", left: "38%", primary: false },
-  { name: "Nellore", top: "66%", left: "46%", primary: false },
+  { name: "Guntur (HQ)", top: "62%", left: "44%", primary: true, labelPos: "right" as const },
+  { name: "Hyderabad", top: "55%", left: "42%", primary: false, labelPos: "left" as const },
+  { name: "Vijayawada", top: "60%", left: "47%", primary: false, labelPos: "right" as const },
+  { name: "Bangalore", top: "72%", left: "40%", primary: false, labelPos: "left" as const },
+  { name: "Chennai", top: "72%", left: "48%", primary: false, labelPos: "right" as const },
+  { name: "Mumbai", top: "48%", left: "22%", primary: false, labelPos: "left" as const },
+  { name: "Delhi", top: "22%", left: "38%", primary: false, labelPos: "right" as const },
+  { name: "Kolkata", top: "40%", left: "65%", primary: false, labelPos: "right" as const },
+  { name: "Pune", top: "52%", left: "26%", primary: false, labelPos: "left" as const },
+  { name: "Visakhapatnam", top: "56%", left: "52%", primary: false, labelPos: "right" as const },
+  { name: "Tirupati", top: "68%", left: "45%", primary: false, labelPos: "left" as const },
+  { name: "Rajahmundry", top: "58%", left: "50%", primary: false, labelPos: "right" as const },
+  { name: "Warangal", top: "53%", left: "45%", primary: false, labelPos: "right" as const },
+  { name: "Kurnool", top: "60%", left: "38%", primary: false, labelPos: "left" as const },
+  { name: "Nellore", top: "66%", left: "46%", primary: false, labelPos: "right" as const },
 ];
 
 const ServiceLocationsMap = () => {
@@ -50,15 +50,15 @@ const ServiceLocationsMap = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative mx-auto max-w-2xl"
+          className="relative mx-auto max-w-4xl"
         >
-          <div className="relative rounded-3xl bg-card p-6 sm:p-10 shadow-premium overflow-hidden border border-border">
+          <div className="relative rounded-3xl bg-card p-4 sm:p-8 lg:p-10 shadow-premium overflow-hidden border border-border">
             {/* India Map Image */}
             <div className="relative">
               <img
                 src={indiaMap}
                 alt="India Map showing Best Packers and Movers service locations"
-                className="w-full h-auto rounded-2xl"
+                className="w-full h-auto rounded-2xl min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] object-contain"
               />
 
               {/* Location markers overlay */}
@@ -80,24 +80,29 @@ const ServiceLocationsMap = () => {
 
                   {/* Marker dot */}
                   <div
-                    className={`relative z-10 rounded-full border-2 shadow-lg cursor-pointer ${
+                    className={`relative z-10 rounded-full border-2 shadow-lg ${
                       loc.primary
                         ? "h-5 w-5 bg-secondary border-secondary shadow-glow-orange"
                         : "h-3 w-3 bg-primary border-primary/80"
                     }`}
                   />
 
-                  {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
-                    <div
-                      className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold shadow-lg ${
+                  {/* Always-visible label */}
+                  <div
+                    className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap z-20 ${
+                      loc.labelPos === "right" ? "left-full ml-1.5" : "right-full mr-1.5"
+                    }`}
+                  >
+                    <span
+                      className={`text-[9px] sm:text-[10px] lg:text-xs font-bold drop-shadow-md ${
                         loc.primary
-                          ? "gradient-orange text-primary-foreground"
-                          : "gradient-navy text-primary-foreground"
+                          ? "text-secondary"
+                          : "text-primary"
                       }`}
+                      style={{ textShadow: "0 1px 3px rgba(0,0,0,0.5), 0 0px 6px rgba(0,0,0,0.3)" }}
                     >
                       {loc.name}
-                    </div>
+                    </span>
                   </div>
                 </motion.div>
               ))}
