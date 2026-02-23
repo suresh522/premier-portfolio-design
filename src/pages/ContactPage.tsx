@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import Contact from "@/components/Contact";
-
+import ContactForm from "@/components/ContactForm";
 const ContactPage = () => {
   return (
     <main className="min-h-screen pt-20">
@@ -33,6 +33,7 @@ const ContactPage = () => {
       </section>
 
       <Contact />
+      <ContactForm />
 
       <section className="pb-0">
         <iframe
