@@ -40,12 +40,8 @@ const testimonials = [
   },
 ];
 
-const TestimonialCard = ({ t, highlight }: { t: typeof testimonials[0]; highlight?: boolean }) => (
-  <div
-    className={`relative flex-shrink-0 w-[85vw] md:w-[calc(33.333%-16px)] rounded-2xl border border-border bg-card p-6 shadow-md transition-all duration-300 ${
-      highlight ? "md:scale-105 md:shadow-premium md:border-secondary/30" : ""
-    }`}
-  >
+const TestimonialCard = ({ t }: { t: typeof testimonials[0] }) => (
+  <div className="relative flex-shrink-0 w-[85vw] md:w-[calc(33.333%-16px)] rounded-2xl border border-border bg-card p-6 shadow-md">
     <Quote className="absolute top-4 right-4 h-8 w-8 text-secondary/15" />
     <div className="flex gap-1 mb-4">
       {Array.from({ length: 5 }).map((_, i) => (
@@ -75,39 +71,96 @@ const TestimonialCard = ({ t, highlight }: { t: typeof testimonials[0]; highligh
 const Testimonials = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [current, setCurrent] = useState(0);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<number | null>(null);
+  const offsetRef = useRef(0);
+  const [, forceUpdate] = useState(0);
 
-  const totalSlides = testimonials.length;
+  // We duplicate testimonials 3x for seamless infinite scroll
+  const tripled = [...testimonials, ...testimonials, ...testimonials];
+  const singleSetWidth = useRef(0);
 
-  const startAutoplay = useCallback(() => {
-    if (autoplayRef.current) clearInterval(autoplayRef.current);
-    autoplayRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % totalSlides);
-    }, 4000);
-  }, [totalSlides]);
+  const measure = useCallback(() => {
+    if (trackRef.current) {
+      const children = trackRef.current.children;
+      if (children.length > 0) {
+        // Width of one set of testimonials
+        const totalCards = testimonials.length;
+        let w = 0;
+        for (let i = 0; i < totalCards && i < children.length; i++) {
+          w += (children[i] as HTMLElement).offsetWidth + 24; // 24 = gap-6
+        }
+        singleSetWidth.current = w;
+      }
+    }
+  }, []);
 
   useEffect(() => {
-    if (!isHovered) startAutoplay();
-    return () => {
-      if (autoplayRef.current) clearInterval(autoplayRef.current);
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure]);
+
+  // Continuous smooth scroll animation
+  useEffect(() => {
+    if (!isInView) return;
+
+    const speed = 0.5; // pixels per frame
+    let lastTime = performance.now();
+
+    const animate = (now: number) => {
+      const delta = now - lastTime;
+      lastTime = now;
+
+      if (!isHovered && singleSetWidth.current > 0) {
+        offsetRef.current += speed * (delta / 16.67); // normalize to 60fps
+        if (offsetRef.current >= singleSetWidth.current) {
+          offsetRef.current -= singleSetWidth.current;
+        }
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
+        }
+      }
+
+      animationRef.current = requestAnimationFrame(animate);
     };
-  }, [isHovered, startAutoplay]);
 
-  const prev = () => {
-    setCurrent((c) => (c - 1 + totalSlides) % totalSlides);
-    startAutoplay();
-  };
-  const next = () => {
-    setCurrent((c) => (c + 1) % totalSlides);
-    startAutoplay();
-  };
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [isInView, isHovered]);
 
-  // Build the visible 3-card window
-  const getVisibleIndices = () =>
-    [0, 1, 2].map((offset) => (current + offset) % totalSlides);
+  const scrollByCards = (dir: number) => {
+    if (!trackRef.current || !singleSetWidth.current) return;
+    const cardWidth = singleSetWidth.current / testimonials.length;
+    const target = offsetRef.current + dir * cardWidth;
+
+    // Smooth manual scroll
+    const start = offsetRef.current;
+    const startTime = performance.now();
+    const duration = 400;
+
+    const step = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      offsetRef.current = start + (target - start) * eased;
+
+      if (offsetRef.current >= singleSetWidth.current) {
+        offsetRef.current -= singleSetWidth.current;
+      } else if (offsetRef.current < 0) {
+        offsetRef.current += singleSetWidth.current;
+      }
+
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
+      }
+
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
 
   return (
     <section className="section-padding bg-background relative overflow-hidden">
@@ -140,55 +193,31 @@ const Testimonials = () => {
         >
           {/* Navigation arrows */}
           <button
-            onClick={prev}
+            onClick={() => scrollByCards(-1)}
             className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 rounded-full gradient-navy p-3 text-primary-foreground shadow-lg transition hover:scale-110 md:-left-6"
             aria-label="Previous testimonial"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
           <button
-            onClick={next}
+            onClick={() => scrollByCards(1)}
             className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 rounded-full gradient-navy p-3 text-primary-foreground shadow-lg transition hover:scale-110 md:-right-6"
             aria-label="Next testimonial"
           >
             <ArrowRight className="h-5 w-5" />
           </button>
 
-          <div className="overflow-hidden px-4 py-6" ref={trackRef}>
-            <motion.div
-              className="flex gap-6 py-4"
-              animate={{ x: 0 }}
-              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-              key={current}
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
+          <div className="overflow-hidden px-4 py-8">
+            <div
+              ref={trackRef}
+              className="flex gap-6 will-change-transform"
+              style={{ transform: `translateX(-${offsetRef.current}px)` }}
             >
-              {getVisibleIndices().map((index, offset) => (
-                <TestimonialCard
-                  key={`${current}-${index}`}
-                  t={testimonials[index]}
-                  highlight={offset === 1}
-                />
+              {tripled.map((t, i) => (
+                <TestimonialCard key={`t-${i}`} t={t} />
               ))}
-            </motion.div>
+            </div>
           </div>
-        </div>
-
-        {/* Dots */}
-        <div className="mt-8 flex justify-center gap-2">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                setCurrent(i);
-                startAutoplay();
-              }}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                i === current ? "w-8 bg-secondary" : "w-2.5 bg-muted-foreground/20"
-              }`}
-              aria-label={`Go to testimonial ${i + 1}`}
-            />
-          ))}
         </div>
       </div>
     </section>
