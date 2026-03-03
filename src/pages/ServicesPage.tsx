@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import Services from "@/components/Services";
+import ServicesSummary from "@/components/ServicesSummary";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import PricingTable from "@/components/PricingTable";
 
@@ -35,6 +36,7 @@ const ServicesPage = () => {
       </section>
 
       <Services />
+      <ServicesSummary />
       <PricingTable />
       <WhyChooseUs />
     </main>

@@ -8,6 +8,7 @@ import teamTwoImg from "@/assets/team/team-two.jpg";
 import teamThreeImg from "@/assets/team/team-three.jpg";
 import PricingTable from "@/components/PricingTable";
 import ServiceLocationsMap from "@/components/ServiceLocationsMap";
+import VisionMissionValues from "@/components/VisionMissionValues";
 import { Helmet } from "react-helmet-async";
 
 const About = () => {
@@ -42,6 +43,7 @@ const About = () => {
       </section>
 
       <CompanyBrief />
+      <VisionMissionValues />
       <FounderSection />
       <TeamSection />
       <WorkingProcess />
