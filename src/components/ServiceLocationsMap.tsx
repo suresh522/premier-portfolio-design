@@ -97,9 +97,9 @@ const ServiceLocationsMap = () => {
                       className={`text-[9px] sm:text-[10px] lg:text-xs font-bold drop-shadow-md ${
                         loc.primary
                           ? "text-secondary"
-                          : "text-primary"
+                          : "text-yellow-400"
                       }`}
-                      style={{ textShadow: "0 1px 3px rgba(0,0,0,0.5), 0 0px 6px rgba(0,0,0,0.3)" }}
+                      style={{ textShadow: "0 1px 3px rgba(0,0,0,0.7), 0 0px 8px rgba(0,0,0,0.5)" }}
                     >
                       {loc.name}
                     </span>
