@@ -1,10 +1,6 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useCallback } from "react";
-import {
-  Home, Building2, Truck, Package, Weight, MapPin,
-  ChevronDown, ChevronUp, X, ChevronLeft, ChevronRight,
-  Play,
-} from "lucide-react";
+import { useRef, useState } from "react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import serviceResidential from "@/assets/service-residential.jpg";
 import serviceOffice from "@/assets/service-office.jpg";
 import serviceTransport from "@/assets/service-transport.jpg";
@@ -12,10 +8,9 @@ import serviceTransport from "@/assets/service-transport.jpg";
 const detailedServices = [
   {
     id: 1,
-    icon: Home,
     title: "Household Shifting",
     description: "Moving complete household items from one home to another.",
-    image: serviceResidential,
+    images: [serviceResidential, serviceOffice, serviceTransport, serviceResidential],
     includes: [
       "Packing furniture",
       "Packing kitchen items",
@@ -27,10 +22,9 @@ const detailedServices = [
   },
   {
     id: 2,
-    icon: Building2,
     title: "Office Relocation",
     description: "Moving offices, companies, and corporate spaces.",
-    image: serviceOffice,
+    images: [serviceOffice, serviceResidential, serviceTransport, serviceOffice],
     includes: [
       "Packing office furniture",
       "Computer & server relocation",
@@ -40,10 +34,9 @@ const detailedServices = [
   },
   {
     id: 3,
-    icon: Truck,
     title: "Vehicle Transportation",
     description: "Transporting vehicles safely to another city.",
-    image: serviceTransport,
+    images: [serviceTransport, serviceResidential, serviceOffice, serviceTransport],
     includes: [
       "Car transportation",
       "Bike transportation",
@@ -53,10 +46,9 @@ const detailedServices = [
   },
   {
     id: 4,
-    icon: Package,
     title: "Packing and Unpacking",
     description: "Professional packing to protect items during transport.",
-    image: serviceResidential,
+    images: [serviceResidential, serviceTransport, serviceOffice, serviceResidential],
     includes: [
       "Bubble wrap packing",
       "Carton box packing",
@@ -66,10 +58,9 @@ const detailedServices = [
   },
   {
     id: 5,
-    icon: Weight,
     title: "Loading and Unloading",
     description: "Safe lifting and handling of heavy items.",
-    image: serviceOffice,
+    images: [serviceOffice, serviceTransport, serviceResidential, serviceOffice],
     includes: [
       "Furniture handling",
       "Appliance handling",
@@ -79,10 +70,9 @@ const detailedServices = [
   },
   {
     id: 6,
-    icon: MapPin,
     title: "Local Shifting",
     description: "Moving within the same city.",
-    image: serviceTransport,
+    images: [serviceTransport, serviceOffice, serviceResidential, serviceTransport],
     includes: [
       "Vijayawada to Vijayawada",
       "Guntur to Guntur",
@@ -94,45 +84,68 @@ const detailedServices = [
 
 // Lightbox Component
 const Lightbox = ({
-  image,
+  images,
+  currentIndex,
   title,
   onClose,
+  onPrev,
+  onNext,
 }: {
-  image: string;
+  images: string[];
+  currentIndex: number;
   title: string;
   onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
 }) => (
   <AnimatePresence>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
+        initial={{ scale: 0.85, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.8, opacity: 0 }}
+        exit={{ scale: 0.85, opacity: 0 }}
         className="relative max-h-[85vh] max-w-4xl overflow-hidden rounded-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <img src={image} alt={title} className="h-full w-full object-contain" />
+        <img src={images[currentIndex]} alt={title} className="h-full w-full object-contain" />
         <button
           onClick={onClose}
           className="absolute right-3 top-3 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
         >
           <X className="h-5 w-5" />
         </button>
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={(e) => { e.stopPropagation(); onPrev(); }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); onNext(); }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+          </>
+        )}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
           <p className="font-display text-lg font-bold text-white">{title}</p>
+          <p className="text-sm text-white/70">{currentIndex + 1} / {images.length}</p>
         </div>
       </motion.div>
     </motion.div>
   </AnimatePresence>
 );
 
-const ServiceDetailCard = ({
+const ServiceCard = ({
   service,
   index,
 }: {
@@ -141,9 +154,13 @@ const ServiceDetailCard = ({
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const [expanded, setExpanded] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const isEven = index % 2 === 0;
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const openLightbox = (i: number) => {
+    setLightboxIndex(i);
+    setLightboxOpen(true);
+  };
 
   return (
     <>
@@ -151,102 +168,70 @@ const ServiceDetailCard = ({
         ref={ref}
         initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
-        className="group overflow-hidden rounded-2xl bg-card shadow-premium border border-border transition-all duration-300 hover:shadow-xl"
+        transition={{ duration: 0.5, delay: index * 0.08 }}
+        className="rounded-2xl bg-card p-6 shadow-premium border border-border lg:p-8"
       >
-        <div className={`flex flex-col ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"}`}>
-          {/* Image */}
-          <div
-            className="relative h-64 cursor-pointer overflow-hidden lg:h-auto lg:w-2/5"
-            onClick={() => setLightboxOpen(true)}
-          >
-            <img
-              src={service.image}
-              alt={service.title}
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/20" />
-            <div className="absolute bottom-4 left-4 lg:hidden">
-              <div className="rounded-xl gradient-orange p-3 shadow-glow-orange">
-                <service.icon className="h-6 w-6 text-white" />
-              </div>
-            </div>
-            {/* Click to expand overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
-              <span className="rounded-full bg-black/50 px-4 py-2 font-display text-sm font-bold text-white">
-                Click to enlarge
-              </span>
-            </div>
-          </div>
+        {/* Title */}
+        <h3 className="mb-4 font-display text-xl font-black text-foreground lg:text-2xl">
+          {service.id}. {service.title}
+        </h3>
 
-          {/* Content */}
-          <div className="flex flex-1 flex-col justify-center p-6 lg:p-8">
-            <div className="mb-3 flex items-center gap-3">
-              <div className="hidden rounded-xl gradient-orange p-3 shadow-glow-orange lg:flex">
-                <service.icon className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <span className="font-display text-xs font-bold tracking-widest text-secondary uppercase">
-                  Service {service.id}
-                </span>
-                <h3 className="font-display text-xl font-black text-foreground lg:text-2xl">
-                  {service.title}
-                </h3>
-              </div>
+        {/* Image Grid - 4 images */}
+        <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+          {service.images.map((img, i) => (
+            <div
+              key={i}
+              className="group relative cursor-pointer overflow-hidden rounded-xl aspect-[4/3]"
+              onClick={() => openLightbox(i)}
+            >
+              <img
+                src={img}
+                alt={`${service.title} ${i + 1}`}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
+              {i === service.images.length - 1 && service.images.length > 4 && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                  <span className="font-display text-lg font-bold text-white">+{service.images.length - 4}</span>
+                </div>
+              )}
             </div>
+          ))}
+        </div>
 
-            <p className="mb-4 text-muted-foreground leading-relaxed">
-              {service.description}
-            </p>
+        {/* Description */}
+        <p className="mb-4 text-muted-foreground leading-relaxed">
+          {service.description}
+        </p>
 
-            <div>
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="mb-3 flex items-center gap-1 font-display text-sm font-bold text-secondary transition hover:text-secondary/80"
+        {/* Includes */}
+        <div>
+          <p className="mb-2 font-display text-sm font-bold text-foreground">
+            Includes:
+          </p>
+          <ul className="space-y-1.5 pl-1">
+            {service.includes.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2 text-sm text-muted-foreground"
               >
-                {expanded ? "Hide Details" : "View Includes"}
-                {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-              </button>
-
-              <AnimatePresence>
-                {expanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="rounded-xl bg-muted/50 p-4">
-                      <p className="mb-2 font-display text-xs font-bold text-foreground uppercase tracking-wider">
-                        Includes:
-                      </p>
-                      <ul className="grid gap-1.5 sm:grid-cols-2">
-                        {service.includes.map((item) => (
-                          <li
-                            key={item}
-                            className="flex items-start gap-2 text-sm text-muted-foreground"
-                          >
-                            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" />
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
       </motion.div>
 
       {/* Lightbox */}
       {lightboxOpen && (
         <Lightbox
-          image={service.image}
+          images={service.images}
+          currentIndex={lightboxIndex}
           title={service.title}
           onClose={() => setLightboxOpen(false)}
+          onPrev={() => setLightboxIndex((prev) => (prev - 1 + service.images.length) % service.images.length)}
+          onNext={() => setLightboxIndex((prev) => (prev + 1) % service.images.length)}
         />
       )}
     </>
@@ -278,9 +263,9 @@ const DetailedServices = () => {
           </p>
         </motion.div>
 
-        <div className="flex flex-col gap-8">
+        <div className="grid gap-8 lg:grid-cols-2">
           {detailedServices.map((service, i) => (
-            <ServiceDetailCard key={service.id} service={service} index={i} />
+            <ServiceCard key={service.id} service={service} index={i} />
           ))}
         </div>
       </div>
