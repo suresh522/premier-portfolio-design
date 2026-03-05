@@ -1,6 +1,7 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState, useCallback } from "react";
+import { X, ChevronLeft, ChevronRight, Images } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 import serviceResidential from "@/assets/service-residential.jpg";
 import serviceOffice from "@/assets/service-office.jpg";
 import serviceTransport from "@/assets/service-transport.jpg";
@@ -82,56 +83,34 @@ const detailedServices = [
   },
 ];
 
-// Lightbox Component
+// Lightbox
 const Lightbox = ({
-  images,
-  currentIndex,
-  title,
-  onClose,
-  onPrev,
-  onNext,
+  images, currentIndex, title, onClose, onPrev, onNext,
 }: {
-  images: string[];
-  currentIndex: number;
-  title: string;
-  onClose: () => void;
-  onPrev: () => void;
-  onNext: () => void;
+  images: string[]; currentIndex: number; title: string;
+  onClose: () => void; onPrev: () => void; onNext: () => void;
 }) => (
   <AnimatePresence>
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.85, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.85, opacity: 0 }}
+        initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
         className="relative max-h-[85vh] max-w-4xl overflow-hidden rounded-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <img src={images[currentIndex]} alt={title} className="h-full w-full object-contain" />
-        <button
-          onClick={onClose}
-          className="absolute right-3 top-3 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
-        >
+        <button onClick={onClose} className="absolute right-3 top-3 rounded-full bg-black/50 p-2 text-white hover:bg-black/70">
           <X className="h-5 w-5" />
         </button>
         {images.length > 1 && (
           <>
-            <button
-              onClick={(e) => { e.stopPropagation(); onPrev(); }}
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
-            >
+            <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70">
               <ChevronLeft className="h-6 w-6" />
             </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); onNext(); }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
-            >
+            <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70">
               <ChevronRight className="h-6 w-6" />
             </button>
           </>
@@ -145,22 +124,69 @@ const Lightbox = ({
   </AnimatePresence>
 );
 
-const ServiceCard = ({
-  service,
-  index,
-}: {
-  service: (typeof detailedServices)[0];
-  index: number;
-}) => {
+// Image Carousel with sliding
+const ImageCarousel = ({ images, title, onImageClick }: { images: string[]; title: string; onImageClick: (i: number) => void }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start", slidesToScroll: 1 });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.on("select", () => setSelectedIndex(emblaApi.selectedScrollSnap()));
+  }, [emblaApi])();
+
+  return (
+    <div className="relative group">
+      <div ref={emblaRef} className="overflow-hidden rounded-xl">
+        <div className="flex">
+          {images.map((img, i) => (
+            <div
+              key={i}
+              className="min-w-0 shrink-0 grow-0 basis-1/3 px-1 cursor-pointer"
+              onClick={() => onImageClick(i)}
+            >
+              <div className="overflow-hidden rounded-lg aspect-[4/3]">
+                <img
+                  src={img}
+                  alt={`${title} ${i + 1}`}
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Nav buttons */}
+      <button
+        onClick={scrollPrev}
+        className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/70"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      <button
+        onClick={scrollNext}
+        className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/70"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+      {/* Image count badge */}
+      <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/50 px-2 py-1 text-xs text-white">
+        <Images className="h-3 w-3" />
+        {images.length}
+      </div>
+    </div>
+  );
+};
+
+const ServiceCard = ({ service, index }: { service: (typeof detailedServices)[0]; index: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const openLightbox = (i: number) => {
-    setLightboxIndex(i);
-    setLightboxOpen(true);
-  };
+  const openLightbox = (i: number) => { setLightboxIndex(i); setLightboxOpen(true); };
 
   return (
     <>
@@ -176,54 +202,25 @@ const ServiceCard = ({
           {service.id}. {service.title}
         </h3>
 
-        {/* Image Grid - 4 images */}
-        <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-          {service.images.map((img, i) => (
-            <div
-              key={i}
-              className="group relative cursor-pointer overflow-hidden rounded-xl aspect-[4/3]"
-              onClick={() => openLightbox(i)}
-            >
-              <img
-                src={img}
-                alt={`${service.title} ${i + 1}`}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
-              {i === service.images.length - 1 && service.images.length > 4 && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-                  <span className="font-display text-lg font-bold text-white">+{service.images.length - 4}</span>
-                </div>
-              )}
-            </div>
-          ))}
+        {/* Sliding Image Carousel */}
+        <div className="mb-5">
+          <ImageCarousel images={service.images} title={service.title} onImageClick={openLightbox} />
         </div>
 
         {/* Description */}
-        <p className="mb-4 text-muted-foreground leading-relaxed">
-          {service.description}
-        </p>
+        <p className="mb-4 text-muted-foreground leading-relaxed">{service.description}</p>
 
-        {/* Includes */}
+        {/* Includes - bullet points */}
         <div>
-          <p className="mb-2 font-display text-sm font-bold text-foreground">
-            Includes:
-          </p>
-          <ul className="space-y-1.5 pl-1">
+          <p className="mb-2 font-display text-sm font-bold text-foreground">Includes:</p>
+          <ul className="list-disc pl-5 space-y-1">
             {service.includes.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-2 text-sm text-muted-foreground"
-              >
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" />
-                {item}
-              </li>
+              <li key={item} className="text-sm text-muted-foreground">{item}</li>
             ))}
           </ul>
         </div>
       </motion.div>
 
-      {/* Lightbox */}
       {lightboxOpen && (
         <Lightbox
           images={service.images}
