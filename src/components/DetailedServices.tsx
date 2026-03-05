@@ -132,10 +132,12 @@ const ImageCarousel = ({ images, title, onImageClick }: { images: string[]; titl
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  useCallback(() => {
+  useEffect(() => {
     if (!emblaApi) return;
-    emblaApi.on("select", () => setSelectedIndex(emblaApi.selectedScrollSnap()));
-  }, [emblaApi])();
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi]);
 
   return (
     <div className="relative group">
