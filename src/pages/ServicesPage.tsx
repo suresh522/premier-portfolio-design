@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import Services from "@/components/Services";
+import DetailedServices from "@/components/DetailedServices";
 import ServicesSummary from "@/components/ServicesSummary";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import PricingTable from "@/components/PricingTable";
+import VisitingCard from "@/components/VisitingCard";
 
 const ServicesPage = () => {
   return (
@@ -36,9 +38,11 @@ const ServicesPage = () => {
       </section>
 
       <Services />
+      <DetailedServices />
       <ServicesSummary />
       <PricingTable />
       <WhyChooseUs />
+      <VisitingCard />
     </main>
   );
 };
