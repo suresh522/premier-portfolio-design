@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Images } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import serviceResidential from "@/assets/service-residential.jpg";
