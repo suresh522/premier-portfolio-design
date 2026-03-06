@@ -110,8 +110,15 @@ const CompanyBrief = () => {
             className="flex justify-center"
           >
             <div className="relative">
-              <div className="rounded-2xl gradient-navy p-12 lg:p-16">
-                <img src={logo} alt="Best Packers and Movers Guntur Logo" className="w-64 lg:w-80" />
+              <div className="overflow-hidden rounded-2xl shadow-premium">
+                <video
+                  src={movingVideo}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover aspect-[4/3]"
+                />
               </div>
               <div className="absolute -bottom-4 -right-4 rounded-xl gradient-orange px-6 py-3 shadow-glow-orange">
                 <span className="font-display text-lg font-bold text-primary-foreground">24/7 Service</span>
