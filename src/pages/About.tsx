@@ -112,7 +112,7 @@ const CompanyBrief = () => {
             <div className="relative">
               <div className="overflow-hidden rounded-2xl shadow-premium">
                 <video
-                  src={movingVideo}
+                  src={aboutVideo}
                   autoPlay
                   muted
                   loop
