@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Shield, Award, Users, Target } from "lucide-react";
-import logo from "@/assets/logo-transparent.png";
+import movingVideo from "@/assets/moving-video.mp4";
 import founderImg from "@/assets/team/founder.jpg";
 import teamOneImg from "@/assets/team/team-one.jpg";
 import teamTwoImg from "@/assets/team/team-two.jpg";
