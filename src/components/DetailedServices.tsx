@@ -83,7 +83,6 @@ const detailedServices = [
   },
 ];
 
-// Lightbox
 const Lightbox = ({
   images, currentIndex, title, onClose, onPrev, onNext,
 }: {
@@ -124,13 +123,21 @@ const Lightbox = ({
   </AnimatePresence>
 );
 
-// Image Carousel with sliding
-const ImageCarousel = ({ images, title, onImageClick }: { images: string[]; title: string; onImageClick: (i: number) => void }) => {
+const AutoplayCarousel = ({ images, title, onImageClick }: { images: string[]; title: string; onImageClick: (i: number) => void }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start", slidesToScroll: 1 });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  // Autoplay
+  useEffect(() => {
+    if (!emblaApi) return;
+    const interval = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -146,7 +153,7 @@ const ImageCarousel = ({ images, title, onImageClick }: { images: string[]; titl
           {images.map((img, i) => (
             <div
               key={i}
-              className="min-w-0 shrink-0 grow-0 basis-1/3 px-1 cursor-pointer"
+              className="min-w-0 shrink-0 grow-0 basis-full sm:basis-1/2 md:basis-1/3 px-1.5 cursor-pointer"
               onClick={() => onImageClick(i)}
             >
               <div className="overflow-hidden rounded-lg aspect-[4/3]">
@@ -160,20 +167,18 @@ const ImageCarousel = ({ images, title, onImageClick }: { images: string[]; titl
           ))}
         </div>
       </div>
-      {/* Nav buttons */}
       <button
         onClick={scrollPrev}
-        className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/70"
+        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/70"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-5 w-5" />
       </button>
       <button
         onClick={scrollNext}
-        className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/70"
+        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white opacity-0 transition group-hover:opacity-100 hover:bg-black/70"
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-5 w-5" />
       </button>
-      {/* Image count badge */}
       <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/50 px-2 py-1 text-xs text-white">
         <Images className="h-3 w-3" />
         {images.length}
@@ -197,22 +202,18 @@ const ServiceCard = ({ service, index }: { service: (typeof detailedServices)[0]
         initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: index * 0.08 }}
-        className="rounded-2xl bg-card p-6 shadow-premium border border-border lg:p-8"
+        className="border-b border-border pb-10"
       >
-        {/* Title */}
-        <h3 className="mb-4 font-display text-xl font-black text-foreground lg:text-2xl">
+        <h3 className="mb-5 font-display text-2xl font-black text-foreground lg:text-3xl">
           {service.id}. {service.title}
         </h3>
 
-        {/* Sliding Image Carousel */}
         <div className="mb-5">
-          <ImageCarousel images={service.images} title={service.title} onImageClick={openLightbox} />
+          <AutoplayCarousel images={service.images} title={service.title} onImageClick={openLightbox} />
         </div>
 
-        {/* Description */}
         <p className="mb-4 text-muted-foreground leading-relaxed">{service.description}</p>
 
-        {/* Includes - bullet points */}
         <div>
           <p className="mb-2 font-display text-sm font-bold text-foreground">Includes:</p>
           <ul className="list-disc pl-5 space-y-1">
@@ -243,7 +244,7 @@ const DetailedServices = () => {
 
   return (
     <section className="section-padding bg-background">
-      <div className="container mx-auto">
+      <div className="container mx-auto max-w-4xl">
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 20 }}
@@ -257,12 +258,9 @@ const DetailedServices = () => {
           <h2 className="font-display text-3xl font-black text-foreground sm:text-4xl lg:text-5xl">
             What We <span className="text-gradient">Offer</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-            From household goods to office equipment, vehicles to local shifting — we handle everything with professional care.
-          </p>
         </motion.div>
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="space-y-10">
           {detailedServices.map((service, i) => (
             <ServiceCard key={service.id} service={service} index={i} />
           ))}
