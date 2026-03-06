@@ -2,6 +2,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Images } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import serviceResidential from "@/assets/service-residential.jpg";
 import serviceOffice from "@/assets/service-office.jpg";
 import serviceTransport from "@/assets/service-transport.jpg";
