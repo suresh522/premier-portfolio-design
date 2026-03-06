@@ -2,6 +2,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Images } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import serviceResidential from "@/assets/service-residential.jpg";
 import serviceOffice from "@/assets/service-office.jpg";
 import serviceTransport from "@/assets/service-transport.jpg";
@@ -124,25 +125,30 @@ const Lightbox = ({
 );
 
 const AutoplayCarousel = ({ images, title, onImageClick }: { images: string[]; title: string; onImageClick: (i: number) => void }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start", slidesToScroll: 1 });
+  const autoplayPlugin = useRef(Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true }));
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "start", slidesToScroll: 1, dragFree: false },
+    [autoplayPlugin.current]
+  );
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
-  // Autoplay
-  useEffect(() => {
+  const scrollPrev = useCallback(() => {
     if (!emblaApi) return;
-    const interval = setInterval(() => {
-      emblaApi.scrollNext();
-    }, 3000);
-    return () => clearInterval(interval);
+    emblaApi.scrollPrev();
+    autoplayPlugin.current.reset();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollNext();
+    autoplayPlugin.current.reset();
   }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
     emblaApi.on("select", onSelect);
+    onSelect();
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
 
