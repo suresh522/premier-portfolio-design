@@ -159,7 +159,7 @@ const AutoplayCarousel = ({ images, title, onImageClick }: { images: string[]; t
           {images.map((img, i) => (
             <div
               key={i}
-              className="min-w-0 shrink-0 grow-0 basis-full sm:basis-1/2 md:basis-1/3 px-1.5 cursor-pointer"
+              className="min-w-0 shrink-0 grow-0 basis-full px-1.5 cursor-pointer"
               onClick={() => onImageClick(i)}
             >
               <div className="overflow-hidden rounded-lg aspect-[4/3]">
@@ -210,23 +210,27 @@ const ServiceCard = ({ service, index }: { service: (typeof detailedServices)[0]
         transition={{ duration: 0.5, delay: index * 0.08 }}
         className="border-b border-border pb-10"
       >
-        <h3 className="mb-5 font-display text-2xl font-black text-foreground lg:text-3xl">
-          {service.id}. {service.title}
-        </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left Column - Content */}
+          <div className="order-2 lg:order-1">
+            <h3 className="mb-3 font-display text-2xl font-black text-foreground lg:text-3xl">
+              {service.id}. {service.title}
+            </h3>
+            <p className="mb-5 text-muted-foreground leading-relaxed">{service.description}</p>
+            <div>
+              <p className="mb-2 font-display text-sm font-bold text-foreground">Includes:</p>
+              <ul className="list-disc pl-5 space-y-1.5">
+                {service.includes.map((item) => (
+                  <li key={item} className="text-sm text-muted-foreground">{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-        <div className="mb-5">
-          <AutoplayCarousel images={service.images} title={service.title} onImageClick={openLightbox} />
-        </div>
-
-        <p className="mb-4 text-muted-foreground leading-relaxed">{service.description}</p>
-
-        <div>
-          <p className="mb-2 font-display text-sm font-bold text-foreground">Includes:</p>
-          <ul className="list-disc pl-5 space-y-1">
-            {service.includes.map((item) => (
-              <li key={item} className="text-sm text-muted-foreground">{item}</li>
-            ))}
-          </ul>
+          {/* Right Column - Image Carousel */}
+          <div className="order-1 lg:order-2">
+            <AutoplayCarousel images={service.images} title={service.title} onImageClick={openLightbox} />
+          </div>
         </div>
       </motion.div>
 
@@ -250,7 +254,7 @@ const DetailedServices = () => {
 
   return (
     <section className="section-padding bg-background">
-      <div className="container mx-auto max-w-4xl">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 20 }}
