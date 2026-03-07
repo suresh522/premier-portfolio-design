@@ -10,13 +10,8 @@ import VisitingCard from "@/components/VisitingCard";
 
 const ServiceDetailPage = () => {
   const { slug } = useParams();
-  const service = allServices.find((s) => s.slug === slug);
-
-  if (!service) return <Navigate to="/services" replace />;
-
   const headerRef = useRef(null);
   const isHeaderInView = useInView(headerRef, { once: true });
-
   const autoplayPlugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true }));
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [autoplayPlugin.current]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -33,6 +28,9 @@ const ServiceDetailPage = () => {
     onSelect();
     return () => { emblaApi.off("select", onSelect); };
   }, [emblaApi]);
+
+  const service = allServices.find((s) => s.slug === slug);
+  if (!service) return <Navigate to="/services" replace />;
 
   const otherServices = allServices.filter((s) => s.id !== service.id);
   const Icon = service.icon;
