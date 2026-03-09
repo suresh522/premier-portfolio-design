@@ -25,7 +25,7 @@ const slides = [
     description: "Complete household shifting with multi-layer packing, insurance coverage, and doorstep delivery. Your belongings are our responsibility.",
   },
   {
-    image: serviceOffice,
+    image: heroOffice,
     title: "Expert",
     highlight: "Office",
     subtitle: "Relocation",
