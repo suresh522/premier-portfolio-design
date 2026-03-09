@@ -57,7 +57,7 @@ export const allServices: ServiceData[] = [
     longDescription:
       "Relocating your office? We handle everything from IT equipment and server rooms to furniture and important documents. Our team works on weekends and off-hours to ensure zero disruption to your business operations.",
     image: serviceOffice,
-    images: [serviceOffice, serviceResidential, serviceTransport, serviceOffice],
+    images: [serviceOffice, serviceHousehold, serviceVehicle, serviceLoading],
     includes: [
       "Office furniture disassembly & packing",
       "Computer & server relocation",
