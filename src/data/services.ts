@@ -30,8 +30,8 @@ export const allServices: ServiceData[] = [
     description: "Complete household packing and moving with utmost care.",
     longDescription:
       "We provide end-to-end household shifting services across Guntur and Andhra Pradesh. Our trained team carefully packs every item — from delicate glassware to heavy furniture — using premium materials. We ensure safe loading, GPS-tracked transport, and careful unloading at your new home.",
-    image: serviceResidential,
-    images: [serviceResidential, serviceOffice, serviceTransport, serviceResidential],
+    image: serviceHousehold,
+    images: [serviceHousehold, serviceOffice, serviceVehicle, servicePacking],
     includes: [
       "Packing furniture & appliances",
       "Kitchen items & crockery",
