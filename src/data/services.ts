@@ -1,7 +1,10 @@
 import { Home, Building2, Truck, Package, ArrowUpDown, MapPin } from "lucide-react";
-import serviceResidential from "@/assets/service-residential.jpg";
-import serviceOffice from "@/assets/service-office.jpg";
-import serviceTransport from "@/assets/service-transport.jpg";
+import serviceHousehold from "@/assets/service-household.jpg";
+import serviceOffice from "@/assets/service-office-new.jpg";
+import serviceVehicle from "@/assets/service-vehicle.jpg";
+import servicePacking from "@/assets/service-packing.jpg";
+import serviceLoading from "@/assets/service-loading.jpg";
+import serviceLocal from "@/assets/service-local.jpg";
 
 export interface ServiceData {
   id: number;
