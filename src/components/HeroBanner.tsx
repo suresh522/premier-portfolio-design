@@ -18,7 +18,7 @@ const slides = [
     description: "Professional household & office goods packing, moving, and relocation services — available 24/7 across Guntur and beyond.",
   },
   {
-    image: serviceRes,
+    image: heroResidential,
     title: "Safe & Secure",
     highlight: "Residential",
     subtitle: "Moving",
