@@ -131,8 +131,8 @@ export const allServices: ServiceData[] = [
     description: "Safe lifting and handling of heavy items.",
     longDescription:
       "Our skilled labor team specializes in safe loading and unloading of heavy furniture, appliances, and industrial equipment. We use trolleys, ramps, and lifting equipment to prevent damage and ensure worker safety.",
-    image: serviceOffice,
-    images: [serviceOffice, serviceTransport, serviceResidential, serviceOffice],
+    image: serviceLoading,
+    images: [serviceLoading, serviceHousehold, serviceVehicle, servicePacking],
     includes: [
       "Heavy furniture handling",
       "Appliance loading",
