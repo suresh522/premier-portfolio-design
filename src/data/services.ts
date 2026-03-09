@@ -81,8 +81,8 @@ export const allServices: ServiceData[] = [
     description: "Safe car and bike transport to any city in India.",
     longDescription:
       "We transport your car, bike, or any vehicle safely using enclosed carriers and open trailers. Every vehicle is secured with wheel locks and soft straps. GPS tracking lets you monitor your vehicle throughout the journey.",
-    image: serviceTransport,
-    images: [serviceTransport, serviceResidential, serviceOffice, serviceTransport],
+    image: serviceVehicle,
+    images: [serviceVehicle, serviceHousehold, serviceOffice, serviceLocal],
     includes: [
       "Car transportation",
       "Bike transportation",
