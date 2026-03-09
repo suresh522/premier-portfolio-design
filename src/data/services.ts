@@ -1,7 +1,10 @@
 import { Home, Building2, Truck, Package, ArrowUpDown, MapPin } from "lucide-react";
-import serviceResidential from "@/assets/service-residential.jpg";
-import serviceOffice from "@/assets/service-office.jpg";
-import serviceTransport from "@/assets/service-transport.jpg";
+import serviceHousehold from "@/assets/service-household.jpg";
+import serviceOffice from "@/assets/service-office-new.jpg";
+import serviceVehicle from "@/assets/service-vehicle.jpg";
+import servicePacking from "@/assets/service-packing.jpg";
+import serviceLoading from "@/assets/service-loading.jpg";
+import serviceLocal from "@/assets/service-local.jpg";
 
 export interface ServiceData {
   id: number;
@@ -27,8 +30,8 @@ export const allServices: ServiceData[] = [
     description: "Complete household packing and moving with utmost care.",
     longDescription:
       "We provide end-to-end household shifting services across Guntur and Andhra Pradesh. Our trained team carefully packs every item — from delicate glassware to heavy furniture — using premium materials. We ensure safe loading, GPS-tracked transport, and careful unloading at your new home.",
-    image: serviceResidential,
-    images: [serviceResidential, serviceOffice, serviceTransport, serviceResidential],
+    image: serviceHousehold,
+    images: [serviceHousehold, serviceOffice, serviceVehicle, servicePacking],
     includes: [
       "Packing furniture & appliances",
       "Kitchen items & crockery",
@@ -54,7 +57,7 @@ export const allServices: ServiceData[] = [
     longDescription:
       "Relocating your office? We handle everything from IT equipment and server rooms to furniture and important documents. Our team works on weekends and off-hours to ensure zero disruption to your business operations.",
     image: serviceOffice,
-    images: [serviceOffice, serviceResidential, serviceTransport, serviceOffice],
+    images: [serviceOffice, serviceHousehold, serviceVehicle, serviceLoading],
     includes: [
       "Office furniture disassembly & packing",
       "Computer & server relocation",
@@ -78,8 +81,8 @@ export const allServices: ServiceData[] = [
     description: "Safe car and bike transport to any city in India.",
     longDescription:
       "We transport your car, bike, or any vehicle safely using enclosed carriers and open trailers. Every vehicle is secured with wheel locks and soft straps. GPS tracking lets you monitor your vehicle throughout the journey.",
-    image: serviceTransport,
-    images: [serviceTransport, serviceResidential, serviceOffice, serviceTransport],
+    image: serviceVehicle,
+    images: [serviceVehicle, serviceHousehold, serviceOffice, serviceLocal],
     includes: [
       "Car transportation",
       "Bike transportation",
@@ -103,8 +106,8 @@ export const allServices: ServiceData[] = [
     description: "Professional packing to protect items during transport.",
     longDescription:
       "Our expert packing team uses industry-grade materials — bubble wrap, thermocol, corrugated sheets, wooden crates, and heavy-duty cartons — to ensure every item is protected. We also offer complete unpacking and arrangement at your destination.",
-    image: serviceResidential,
-    images: [serviceResidential, serviceTransport, serviceOffice, serviceResidential],
+    image: servicePacking,
+    images: [servicePacking, serviceHousehold, serviceOffice, serviceLoading],
     includes: [
       "Bubble wrap packing",
       "Carton box packing",
@@ -128,8 +131,8 @@ export const allServices: ServiceData[] = [
     description: "Safe lifting and handling of heavy items.",
     longDescription:
       "Our skilled labor team specializes in safe loading and unloading of heavy furniture, appliances, and industrial equipment. We use trolleys, ramps, and lifting equipment to prevent damage and ensure worker safety.",
-    image: serviceOffice,
-    images: [serviceOffice, serviceTransport, serviceResidential, serviceOffice],
+    image: serviceLoading,
+    images: [serviceLoading, serviceHousehold, serviceVehicle, servicePacking],
     includes: [
       "Heavy furniture handling",
       "Appliance loading",
@@ -153,8 +156,8 @@ export const allServices: ServiceData[] = [
     description: "Quick and affordable moves within your city.",
     longDescription:
       "Need to move within Guntur, Vijayawada, or nearby cities? Our local shifting service is fast, affordable, and reliable. We offer same-day delivery with mini trucks and tempos for small to medium moves.",
-    image: serviceTransport,
-    images: [serviceTransport, serviceOffice, serviceResidential, serviceTransport],
+    image: serviceLocal,
+    images: [serviceLocal, serviceHousehold, serviceLoading, serviceVehicle],
     includes: [
       "Same-day delivery",
       "Mini truck & tempo available",
