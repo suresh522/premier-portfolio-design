@@ -106,8 +106,8 @@ export const allServices: ServiceData[] = [
     description: "Professional packing to protect items during transport.",
     longDescription:
       "Our expert packing team uses industry-grade materials — bubble wrap, thermocol, corrugated sheets, wooden crates, and heavy-duty cartons — to ensure every item is protected. We also offer complete unpacking and arrangement at your destination.",
-    image: serviceResidential,
-    images: [serviceResidential, serviceTransport, serviceOffice, serviceResidential],
+    image: servicePacking,
+    images: [servicePacking, serviceHousehold, serviceOffice, serviceLoading],
     includes: [
       "Bubble wrap packing",
       "Carton box packing",
