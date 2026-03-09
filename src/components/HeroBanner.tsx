@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Phone, ArrowRight, Shield, Clock, Truck, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
-import serviceRes from "@/assets/service-residential.jpg";
-import serviceOffice from "@/assets/service-office.jpg";
+import heroResidential from "@/assets/hero-residential.jpg";
+import heroOffice from "@/assets/hero-office.jpg";
 import heroTransport from "@/assets/hero-transport.jpg";
 import heroProject1 from "@/assets/hero-project1.jpg";
 import heroProject2 from "@/assets/hero-project2.jpg";
@@ -18,14 +18,14 @@ const slides = [
     description: "Professional household & office goods packing, moving, and relocation services — available 24/7 across Guntur and beyond.",
   },
   {
-    image: serviceRes,
+    image: heroResidential,
     title: "Safe & Secure",
     highlight: "Residential",
     subtitle: "Moving",
     description: "Complete household shifting with multi-layer packing, insurance coverage, and doorstep delivery. Your belongings are our responsibility.",
   },
   {
-    image: serviceOffice,
+    image: heroOffice,
     title: "Expert",
     highlight: "Office",
     subtitle: "Relocation",
