@@ -156,8 +156,8 @@ export const allServices: ServiceData[] = [
     description: "Quick and affordable moves within your city.",
     longDescription:
       "Need to move within Guntur, Vijayawada, or nearby cities? Our local shifting service is fast, affordable, and reliable. We offer same-day delivery with mini trucks and tempos for small to medium moves.",
-    image: serviceTransport,
-    images: [serviceTransport, serviceOffice, serviceResidential, serviceTransport],
+    image: serviceLocal,
+    images: [serviceLocal, serviceHousehold, serviceLoading, serviceVehicle],
     includes: [
       "Same-day delivery",
       "Mini truck & tempo available",

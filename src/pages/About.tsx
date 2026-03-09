@@ -112,12 +112,9 @@ const CompanyBrief = () => {
           >
             <div className="relative">
               <div className="overflow-hidden rounded-2xl shadow-premium">
-                <video
-                  src={aboutVideo}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                <img
+                  src={aboutCompanyImg}
+                  alt="Best Packers and Movers Guntur team with moving truck"
                   className="h-full w-full object-cover aspect-[4/3]"
                 />
               </div>
