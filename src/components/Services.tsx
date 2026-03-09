@@ -14,56 +14,46 @@ const ServiceCard = ({
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const isEven = index % 2 === 0;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`group grid gap-0 overflow-hidden rounded-2xl bg-card shadow-premium transition-all duration-500 hover:shadow-xl lg:grid-cols-2 ${
-        isEven ? "" : "lg:[direction:rtl]"
-      }`}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="group overflow-hidden rounded-2xl bg-card shadow-premium transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
     >
-      {/* Image */}
-      <div className="relative h-64 overflow-hidden lg:h-full lg:min-h-[320px] lg:[direction:ltr]">
+      <div className="relative h-52 overflow-hidden">
         <img
           src={service.image}
           alt={service.title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/60 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-navy-dark/20" />
-        <div className="absolute top-4 left-4 rounded-xl gradient-orange p-3 shadow-glow-orange">
-          <service.icon className="h-6 w-6 text-primary-foreground" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/80 to-transparent" />
+        <div className="absolute bottom-4 left-4 flex items-center gap-3">
+          <div className="rounded-xl gradient-orange p-3 shadow-glow-orange">
+            <service.icon className="h-5 w-5 text-primary-foreground" />
+          </div>
+          <h3 className="font-display text-lg font-bold text-primary-foreground">
+            {service.title}
+          </h3>
         </div>
       </div>
-
-      {/* Content */}
-      <div className="flex flex-col justify-center p-8 lg:p-10 lg:[direction:ltr]">
-        <span className="mb-2 inline-block w-fit rounded-full bg-secondary/10 px-3 py-1 font-display text-xs font-bold tracking-wider text-secondary uppercase">
-          {service.shortTitle}
-        </span>
-        <h3 className="mb-3 font-display text-2xl font-black text-foreground lg:text-3xl">
-          {service.title}
-        </h3>
-        <p className="mb-5 leading-relaxed text-muted-foreground">
+      <div className="p-5">
+        <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
           {service.description}
         </p>
-
-        {/* Includes preview */}
-        <ul className="mb-6 space-y-2">
+        <ul className="mb-4 space-y-1.5">
           {service.includes.slice(0, 3).map((item) => (
-            <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
+            <li key={item} className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" />
               {item}
             </li>
           ))}
         </ul>
-
         <Link
           to={`/services/${service.slug}`}
-          className="group/link flex w-fit items-center gap-2 font-display text-sm font-bold text-primary transition-colors hover:text-secondary"
+          className="group/link flex items-center gap-1 font-display text-sm font-bold text-primary transition-colors hover:text-secondary"
         >
           View Details
           <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
@@ -99,13 +89,12 @@ const Services = () => {
           </p>
         </motion.div>
 
-        <div className="space-y-8">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {allServices.map((service, i) => (
             <ServiceCard key={service.id} service={service} index={i} />
           ))}
         </div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
