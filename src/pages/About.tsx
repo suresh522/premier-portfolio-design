@@ -20,6 +20,13 @@ const About = () => {
         <meta name="description" content="Learn about Best Packers & Movers Guntur – a trusted packing & moving company in Andhra Pradesh. Founded by Vasanth M, we offer safe household, office & vehicle relocation services. 500+ happy customers." />
         <meta name="keywords" content="about best packers movers guntur, packers movers company guntur, trusted movers andhra pradesh, vasanth m packers movers, moving company guntur AP, relocation experts guntur" />
         <link rel="canonical" href="https://bestpackersandmoversguntur.com/about" />
+        <meta property="og:title" content="About Best Packers & Movers Guntur | Trusted Moving Company AP" />
+        <meta property="og:description" content="Learn about our journey, our team, and our commitment to safe reliable relocation services in Andhra Pradesh." />
+        <meta property="og:url" content="https://bestpackersandmoversguntur.com/about" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:title" content="About Best Packers & Movers Guntur" />
+        <meta name="twitter:description" content="Trusted packing & moving company in Andhra Pradesh." />
+        <script type="application/ld+json">{`{"@context":"https://schema.org","@type":"AboutPage","@id":"https://bestpackersandmoversguntur.com/about#webpage","url":"https://bestpackersandmoversguntur.com/about","name":"About Best Packers & Movers Guntur","isPartOf":{"@id":"https://bestpackersandmoversguntur.com/#website"},"about":{"@id":"https://bestpackersandmoversguntur.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bestpackersandmoversguntur.com/"},{"@type":"ListItem","position":2,"name":"About","item":"https://bestpackersandmoversguntur.com/about"}]}}`}</script>
       </Helmet>
 
       {/* Page Banner */}

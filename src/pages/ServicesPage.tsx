@@ -15,6 +15,14 @@ const ServicesPage = () => {
         <title>Packing & Moving Services Guntur | House, Office, Vehicle Shifting</title>
         <meta name="description" content="Professional packing & moving services in Guntur AP – household shifting, office relocation, car & bike transport, furniture moving, long distance shifting. Affordable rates & 24/7 service. Call 97000 67784." />
         <link rel="canonical" href="https://bestpackersandmoversguntur.com/services" />
+        <meta name="keywords" content="packing services guntur, moving services guntur, house shifting services guntur, office relocation services guntur AP, car transport services guntur, bike shifting services, furniture moving guntur, long distance packers movers, local shifting guntur, commercial moving andhra pradesh, warehouse storage guntur, goods packing guntur, safe transport services AP, door to door shifting guntur" />
+        <meta property="og:title" content="Packing & Moving Services Guntur | House, Office, Vehicle Shifting" />
+        <meta property="og:description" content="Household shifting, office relocation, car & bike transport, packing & unpacking. 24/7 across AP. Call 97000 67784." />
+        <meta property="og:url" content="https://bestpackersandmoversguntur.com/services" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:title" content="Packing & Moving Services Guntur" />
+        <meta name="twitter:description" content="Household, office, vehicle shifting. 24/7 across Andhra Pradesh." />
+        <script type="application/ld+json">{`{"@context":"https://schema.org","@type":"CollectionPage","@id":"https://bestpackersandmoversguntur.com/services#webpage","url":"https://bestpackersandmoversguntur.com/services","name":"Packing & Moving Services Guntur","isPartOf":{"@id":"https://bestpackersandmoversguntur.com/#website"},"about":{"@id":"https://bestpackersandmoversguntur.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bestpackersandmoversguntur.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://bestpackersandmoversguntur.com/services"}]}}`}</script>
       </Helmet>
 
       {/* Hero */}
