@@ -41,6 +41,53 @@ const ServiceDetailPage = () => {
         <title>{service.title} Services Guntur | Best Packers and Movers</title>
         <meta name="description" content={`${service.title} services in Guntur AP – ${service.description} Affordable rates & 24/7 service. Call 97000 67784.`} />
         <link rel="canonical" href={`https://bestpackersandmoversguntur.com/services/${service.slug}`} />
+        <meta name="keywords" content={`${service.title.toLowerCase()} guntur, ${service.title.toLowerCase()} services andhra pradesh, ${service.shortTitle.toLowerCase()} packers movers guntur, ${service.title.toLowerCase()} near me, ${service.title.toLowerCase()} AP, professional ${service.title.toLowerCase()}`} />
+        <meta property="og:title" content={`${service.title} Services Guntur | Best Packers and Movers`} />
+        <meta property="og:description" content={`${service.description} Available 24/7 in Guntur, AP. Call 97000 67784.`} />
+        <meta property="og:url" content={`https://bestpackersandmoversguntur.com/services/${service.slug}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`https://bestpackersandmoversguntur.com${service.image.startsWith('/') ? '' : '/'}${service.image}`} />
+        <meta name="twitter:title" content={`${service.title} Services Guntur`} />
+        <meta name="twitter:description" content={service.description} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "@id": `https://bestpackersandmoversguntur.com/services/${service.slug}#service`,
+          "name": service.title,
+          "serviceType": service.title,
+          "description": service.longDescription,
+          "url": `https://bestpackersandmoversguntur.com/services/${service.slug}`,
+          "provider": { "@id": "https://bestpackersandmoversguntur.com/#organization" },
+          "areaServed": [
+            { "@type": "State", "name": "Andhra Pradesh" },
+            { "@type": "State", "name": "Telangana" },
+            { "@type": "City", "name": "Guntur" }
+          ],
+          "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "INR",
+            "url": `https://bestpackersandmoversguntur.com/services/${service.slug}`
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": `${service.title} Inclusions`,
+            "itemListElement": service.includes.map((inc, i) => ({
+              "@type": "Offer",
+              "position": i + 1,
+              "itemOffered": { "@type": "Service", "name": inc }
+            }))
+          }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://bestpackersandmoversguntur.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://bestpackersandmoversguntur.com/services" },
+            { "@type": "ListItem", "position": 3, "name": service.title, "item": `https://bestpackersandmoversguntur.com/services/${service.slug}` }
+          ]
+        })}</script>
       </Helmet>
 
       {/* Hero */}

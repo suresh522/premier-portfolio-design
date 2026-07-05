@@ -43,6 +43,13 @@ const GalleryPage = () => {
         <meta name="description" content="View our gallery of completed packing & moving projects in Guntur. See how Best Packers & Movers handles household shifting, office relocation, furniture packing & vehicle transport with care." />
         <meta name="keywords" content="packers movers gallery guntur, moving photos guntur, packing work images, household shifting photos AP, office relocation gallery, furniture packing images guntur, transport service photos andhra pradesh" />
         <link rel="canonical" href="https://bestpackersandmoversguntur.com/gallery" />
+        <meta property="og:title" content="Gallery | Best Packers & Movers Guntur Work Photos" />
+        <meta property="og:description" content="Real photos of household, office, furniture and vehicle relocations by Best Packers & Movers Guntur." />
+        <meta property="og:url" content="https://bestpackersandmoversguntur.com/gallery" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:title" content="Gallery | Best Packers & Movers Guntur" />
+        <meta name="twitter:description" content="Real photos of our packing & moving work." />
+        <script type="application/ld+json">{`{"@context":"https://schema.org","@type":"ImageGallery","@id":"https://bestpackersandmoversguntur.com/gallery#webpage","url":"https://bestpackersandmoversguntur.com/gallery","name":"Best Packers & Movers Guntur - Gallery","isPartOf":{"@id":"https://bestpackersandmoversguntur.com/#website"},"about":{"@id":"https://bestpackersandmoversguntur.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bestpackersandmoversguntur.com/"},{"@type":"ListItem","position":2,"name":"Gallery","item":"https://bestpackersandmoversguntur.com/gallery"}]}}`}</script>
       </Helmet>
 
       <section className="gradient-navy py-16 lg:py-24">

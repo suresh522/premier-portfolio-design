@@ -10,6 +10,13 @@ const ContactPage = () => {
         <meta name="description" content="Contact Best Packers & Movers Guntur for free moving quote. Call 97000 67784 or 63014 09282. Office: Vishnu Nagar 3rd Line, Nagaralu, Amaravati Road, Guntur 522034, AP. 24/7 available." />
         <meta name="keywords" content="contact packers movers guntur, packers movers phone number guntur, free moving quote guntur, packers movers address guntur, best movers contact AP, call packers movers guntur, whatsapp packers movers guntur, moving quote andhra pradesh" />
         <link rel="canonical" href="https://bestpackersandmoversguntur.com/contact" />
+        <meta property="og:title" content="Contact Best Packers & Movers Guntur | Get Free Quote" />
+        <meta property="og:description" content="Reach us at 97000 67784. Office in Guntur, AP. 24/7 available." />
+        <meta property="og:url" content="https://bestpackersandmoversguntur.com/contact" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:title" content="Contact Best Packers & Movers Guntur" />
+        <meta name="twitter:description" content="Get a free quote — call 97000 67784. 24/7 in Guntur, AP." />
+        <script type="application/ld+json">{`{"@context":"https://schema.org","@type":"ContactPage","@id":"https://bestpackersandmoversguntur.com/contact#webpage","url":"https://bestpackersandmoversguntur.com/contact","name":"Contact Best Packers & Movers Guntur","isPartOf":{"@id":"https://bestpackersandmoversguntur.com/#website"},"about":{"@id":"https://bestpackersandmoversguntur.com/#organization"},"inLanguage":"en-IN","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bestpackersandmoversguntur.com/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://bestpackersandmoversguntur.com/contact"}]}}`}</script>
       </Helmet>
 
       <section className="gradient-navy py-16 lg:py-24">
